@@ -23,7 +23,7 @@
 #define NL2 10//Output
 #define N SIZE //784 -Input
 #define M NUM_TRAIN//60000 - Number of inputs-outputs 
-#define EPOCH 100
+#define EPOCH 10
 
 
 #define a -0.2 //learning rate
@@ -84,9 +84,10 @@ int main(){
         t2 = omp_get_wtime() ;
         ttot += t = t2-t1 ;
         //Print every 100 epoch
-        if(epoch%10==0){
+        // if(epoch%100==0){
             printf("%4.0d MSE: %lf, ",epoch,error/M);
-            printf("time : %lfs\n",t);}
+            printf("time : %lfs\n",t);
+        // }
     }
     // SaveWeightsToFile("Final_Weights.csv");
     
