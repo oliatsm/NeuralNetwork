@@ -19,21 +19,21 @@
 #define NL1 100//hidden Layer
 #define NL2 10//Output
 #define N 12 //Input
-#define M 70000//Number of inputs-outputs
-#define TEST 10000//test batch
+#define M 700//Number of inputs-outputs
+#define TEST 100//test batch
 #define EPOCH 1000
 
 #define a -0.2//learning rate
 
 //---------------------
 double X[M][N];
-double Y[M][NL2]={0};
-double WL1[NL1][N+1];
-double WL2[NL2][NL1+1];
+double Y[M][NL2]={0};//Expected Outputs -Training
+double WL1[NL1][N+1];//Hidden Layer
+double WL2[NL2][NL1+1];//Outputlayer
 double DL1[NL1];
-double OL1[NL1];
+double OL1[NL1];//Hidden Layer Outputs
 double DL2[NL2];
-double OL2[NL2];
+double OL2[NL2];//Output Layer Outputs
 
 void Initialise_X();
 void Initialise_W();
@@ -50,9 +50,10 @@ double MSE(double *desired);
 int max_index(int n,double *arr);
 
 int main(){
-    printf("Lab4 - NN\n");
+    printf("Lab4 - NN Random Values\n");
     double t1, t2, ttot = 0, t ;
-    printf("\nX[%d][%d], L1: %d, L2: %d\n",M,N,NL1,NL2);
+    printf("\nX[%d][%d], L1: %d, L2: %d\n",M-TEST,N,NL1,NL2);
+    printf("    epoch: %d\n",EPOCH);
 	
     t1 = omp_get_wtime() ;
     Initialise_X();//Random values X[M][N] and Y[M][NL2]
@@ -64,19 +65,21 @@ int main(){
     SaveWeightsToFile("Weights_t0.csv");
     
 //*
+    //Training NN  
     for(int epoch=0;epoch<EPOCH;epoch++){
       double error=0;
       t1 = omp_get_wtime() ;
       for(int d=0;d<M-TEST;d++){
-            activateNN((double *)X[d]);
-            trainNN((double *)X[d],(double *)Y[d]);
-            error+=MSE((double*)Y[d]);
+            activateNN((double *)X[d]);//forward pass
+            trainNN((double *)X[d],(double *)Y[d]);//Training
+            error+=MSE((double*)Y[d]);//Mean Squared Error per Training Output
         }
         t2 = omp_get_wtime() ;
         ttot += t = t2-t1 ;
+        //Print every 100 epoch
         if(epoch%100==0){
             printf("%4.0d MSE: %lf , ",epoch,error/(M-TEST));
-            printf("time : %lf\n",t);
+            printf("time : %lfs\n",t);
         }
     }
     //*/
@@ -97,12 +100,12 @@ int main(){
         // printf("%lf,%lf - > %d\n",X[d][0],X[d][1],category);
     }
     printf("Test MSE: %lf\n",err/TEST);
-    printf("Test Correct: %d of %d \n",count,TEST);
+    printf("Test Correct: %d of %d (%3.1f %%)\n",count,TEST,(100.0*count/TEST));
     t2 = omp_get_wtime() ;
     ttot += t = t2-t1 ;
-    printf("    time : %lf\n",t);
+    printf("    time : %lfs\n",t);
 
-    printf("Total time : %lf\n",ttot);
+    printf("Total time : %lfs\n",ttot);
 //  */   
     SaveWeightsToFile("Weights_t1.csv");
 
@@ -149,6 +152,10 @@ double dsigmoid(double y){return y*(1-y);}
 //*********************************************************
 
 void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]){
+    // !!! W[n][m+1] !!! x[m]: inputs, y[n]: outputs
+    //n : neuron number
+    //m : inputs to neuron n
+    //m+1: bias
 
     double sum;
 
@@ -239,7 +246,7 @@ double MSE(double *desired){
 }
 //*********************************************************
 int max_index(int n,double *arr){
-
+    //convert output to category
     double max=arr[0];
     int index = 0;
     for(int i=0;i<n;i++){
