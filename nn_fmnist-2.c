@@ -14,8 +14,8 @@
 #include "mnist.h"
 
 // *******************************************************************
-#pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline", "unsafe-math-optimizations")
-#pragma GCC option("arch=native","tune=native","no-zero-upper")
+// #pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline", "unsafe-math-optimizations")
+// #pragma GCC option("arch=native","tune=native","no-zero-upper")
 //************************************************************
 
 
@@ -23,7 +23,7 @@
 #define NL2 10//Output
 #define N SIZE //784 -Input
 #define M NUM_TRAIN//60000 - Number of inputs-outputs 
-#define EPOCH 1000
+#define EPOCH 100
 
 
 #define a -0.2 //learning rate
@@ -60,28 +60,31 @@ int main(){
     double t1, t2, ttot = 0, t ;
     printf("\nX[%d][%d], L1: %d, L2: %d,  ",M,N,NL1,NL2);
     printf("epoch: %d\n",EPOCH);
+    
     t1 = omp_get_wtime() ;
     Initialise_X(); //Load fmnitst Data
     Initialise_W(); //Random W values, [-0.1,0.1]
     t2 = omp_get_wtime() ;
     ttot += t = t2-t1 ;
-    printf("Initialise fmnist data,W :  %lfs\n",t);
+    printf("\nInitialise fmnist data,W :  %lfs\n",t);
     // SaveWeightsToFile("Initial_Weights.csv");
 
 //* 
-//Training NN   
+//Training NN 
+    printf("\nTraining\n");
+
     for(int epoch=0;epoch<EPOCH;epoch++){
         double error=0;//mean squared error for training set
         t1 = omp_get_wtime() ;
         for(int d=0;d<M;d++){
             activateNN((double *)train_image[d]); //forward Pass
             trainNN((double *)train_image[d],(double *)Y[d]); //Training
-            error+=MSE((double *)Y[d]);//Mean Squared Error per Training Input-Output
+            error+=MSE((double *)Y[d]);//Mean Squared Error per Training Output
         }
         t2 = omp_get_wtime() ;
         ttot += t = t2-t1 ;
         //Print every 100 epoch
-        if(epoch%100==0){
+        if(epoch%10==0){
             printf("%4.0d MSE: %lf, ",epoch,error/M);
             printf("time : %lfs\n",t);}
     }
@@ -240,6 +243,19 @@ double MSE(double *desired){
     return sum/NL2;
 }
 //*********************************************************
+int max_index(int n,double *arr){
+    //convert output to category
+    double max=arr[0];
+    int index = 0;
+    for(int i=0;i<n;i++){
+        if(max<arr[i]){
+            max=arr[i];
+            index = i;
+        }  
+    }
+    return index;
+}
+//*********************************************************
 
 void SaveWeightsToFile(char *fileName){
 
@@ -266,18 +282,5 @@ for(int i=0;i<NL2;i++){
 
 fclose(filePointer);
     
-}
-//*********************************************************
-int max_index(int n,double *arr){
-    //convert output to category
-    double max=arr[0];
-    int index = 0;
-    for(int i=0;i<n;i++){
-        if(max<arr[i]){
-            max=arr[i];
-            index = i;
-        }  
-    }
-    return index;
 }
 //*********************************************************
