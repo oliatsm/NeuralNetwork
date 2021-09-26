@@ -85,7 +85,7 @@ $ time ./fmnist
 
 X[60000][784], L1: 100, L2: 10,  epoch: 1000
 Initialise fmnist data,W :  0.682202s
-        MSE: 0.027583, time : 5.143038s
+     MSE: 0.027583, time : 5.143038s
  100 MSE: 0.013489, time : 8.138292s
  200 MSE: 0.011950, time : 5.967105s
  300 MSE: 0.009765, time : 5.306875s
