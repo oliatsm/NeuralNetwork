@@ -80,31 +80,44 @@ int main(){
 ## Αποτελέσματα κώδικα με δεδομένα fashion mnist, για 1000 επαναλήψεις:
 
 ```
-$ gcc -o fmnist nn_fmnist-2.c -fopenmp -lm
+$ gcc nn_fmnist-5.c -o nn_fmnist -lm -fopenmp
 $ time ./fmnist 
 
-X[60000][784], L1: 100, L2: 10,  epoch: 1000
-Initialise fmnist data,W :  0.682202s
-     MSE: 0.027583, time : 5.143038s
- 100 MSE: 0.013489, time : 8.138292s
- 200 MSE: 0.011950, time : 5.967105s
- 300 MSE: 0.009765, time : 5.306875s
- 400 MSE: 0.008898, time : 5.102918s
- 500 MSE: 0.009068, time : 5.110120s
- 600 MSE: 0.007795, time : 5.141652s
- 700 MSE: 0.007475, time : 5.126513s
- 800 MSE: 0.007152, time : 5.131338s
- 900 MSE: 0.007161, time : 5.966761s
+X[60000][784], L1: 100, L2: 10,  epoch: 20
+
+Initialise fmnist data,W :  0.702933s
+
+Training
+     MSE: 0.046677, Acc: 68.281667, time : 38.386558s
+   1 MSE: 0.029026, Acc: 81.086667, time : 40.930665s
+   2 MSE: 0.025730, Acc: 83.178333, time : 39.162451s
+   3 MSE: 0.024114, Acc: 84.215000, time : 37.570604s
+   4 MSE: 0.023024, Acc: 84.978333, time : 37.321124s
+   5 MSE: 0.022192, Acc: 85.581667, time : 36.369080s
+   6 MSE: 0.021514, Acc: 85.971667, time : 36.452514s
+   7 MSE: 0.020943, Acc: 86.373333, time : 36.322375s
+   8 MSE: 0.020451, Acc: 86.680000, time : 36.347077s
+   9 MSE: 0.020018, Acc: 86.958333, time : 36.297263s
+  10 MSE: 0.019633, Acc: 87.190000, time : 37.876887s
+  11 MSE: 0.019287, Acc: 87.421667, time : 38.476182s
+  12 MSE: 0.018974, Acc: 87.588333, time : 37.036921s
+  13 MSE: 0.018687, Acc: 87.793333, time : 36.514782s
+  14 MSE: 0.018422, Acc: 87.941667, time : 36.377067s
+  15 MSE: 0.018177, Acc: 88.105000, time : 36.308365s
+  16 MSE: 0.017948, Acc: 88.216667, time : 37.814276s
+  17 MSE: 0.017733, Acc: 88.346667, time : 37.328177s
+  18 MSE: 0.017530, Acc: 88.460000, time : 37.479174s
+  19 MSE: 0.017337, Acc: 88.585000, time : 37.176122s
 
 Test
-Test MSE: 0.173984
-Test Error: 1338 of 10000 (13.4 %)
-    time : 0.475545s
-Total time : 5602.718424s
+Test MSE: 0.159970
+Test Acc: 8677 of 10000 (86.8 %)
+    time : 2.777352s
+Total time : 751.027950s
 
-real    93m22,764s
-user    92m59,054s
-sys        0m9,103s
+real    12m31,069s
+user    12m29,741s
+sys     0m0,612s
 
 ```
 
