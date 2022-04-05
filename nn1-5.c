@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <omp.h>
-#include "headers/printing.h"
+#include "printing.h"
 
 // *******************************************************************
 // #pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline", "unsafe-math-optimizations")
@@ -18,12 +18,12 @@
 
 #define NL1 100//hidden Layer
 #define NL2 10//Output
-#define N 12 //Input
-#define M 700//Number training sets = (M-TEST), M= total number of examples
-#define TEST 100//test batch
-#define EPOCH 1000
+#define N 784 //Input
+#define M 70000//Number training sets = (M-TEST), M= total number of examples
+#define TEST 10000//test batch
+#define EPOCH 20
 
-#define a -0.2//learning rate
+#define a -0.01//learning rate
 
 //---------------------
 double X[M][N];
@@ -76,10 +76,10 @@ int main(){
         t2 = omp_get_wtime() ;
         ttot += t = t2-t1 ;
         //Print every 100 epoch
-        if(epoch%100==0){
+        // if(epoch%100==0){
             printf("%4.0d MSE: %lf , ",epoch,error/(M-TEST));
             printf("time : %lfs\n",t);
-        }
+        // }
     }
     
 
