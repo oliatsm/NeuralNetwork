@@ -123,3 +123,32 @@ sys     0m0,612s
 
 ---
 
+## Αποτελέσματα κώδικα XOR:
+```
+$ gcc nn_xor-3.c -o nn_xor-3 -lm -fopenmp 
+$ time ./nn_xor-3 
+XOR - NN
+
+X[60000][2], L1: 100, L2: 10
+Initialise X,Y,W :  0.005535s
+     MSE: 0.050732 , time : 1.019057s
+   1 MSE: 0.050422 , time : 0.949161s
+   2 MSE: 0.050408 , time : 0.963353s
+   3 MSE: 0.050399 , time : 0.944530s
+   4 MSE: 0.050391 , time : 0.953095s
+   5 MSE: 0.050383 , time : 0.957644s
+   6 MSE: 0.050374 , time : 0.946143s
+   7 MSE: 0.050359 , time : 0.947841s
+   8 MSE: 0.050157 , time : 0.940041s
+   9 MSE: 0.038376 , time : 0.948612s
+
+Test
+Test MSE: 0.020313
+Test Acc: 10000 of 10000 (100.0 %)
+    time : 0.072574s
+Total time : 9.647587s
+
+real    0m9,650s
+user    0m9,609s
+sys     0m0,028s
+```
