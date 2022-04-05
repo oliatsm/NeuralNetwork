@@ -1,3 +1,23 @@
+$ nvcpuid 
+vendor id       : GenuineIntel
+model name      : Intel(R) Core(TM) i5-5200U CPU @ 2.20GHz
+cpu family      : 6
+model           : 61
+name            : Broadwell Core gen 5 M-5xxx
+stepping        : 4
+processors      : 4
+threads         : 2
+clflush size    : 8
+L2 cache size   : 256KB
+L3 cache size   : 3072KB
+flags           : acpi aes apic avx avx2 cflush cmov cplds cx8 cx16 de dtes
+flags           : f16c ferr fma fpu fxsr ht lm mca mce mmx monitor movbe msr
+flags           : mtrr nx osxsave pae pat pdcm pge popcnt pse pseg36
+flags           : selfsnoop speedstep sep sse sse2 sse3 ssse3 sse4.1 sse4.2
+flags           : syscall tm tm2 tsc vme xsave xtpr
+default target  : -tp haswell
+```
+
 ```
 $ nvaccelinfo 
 
