@@ -77,7 +77,7 @@ int main(){
 
 ---
 
-## Αποτελέσματα κώδικα με δεδομένα fashion mnist, για 1000 επαναλήψεις:
+## Αποτελέσματα κώδικα με δεδομένα fashion mnist, για 20 επαναλήψεις:
 
 ```
 $ gcc nn_fmnist-5.c -o nn_fmnist -lm -fopenmp
