@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <omp.h>
-#include "headers/printing.h"
+#include "printing.h"
 
 // *******************************************************************
 // #pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline", "unsafe-math-optimizations")
@@ -24,7 +24,7 @@
 #define N 2 //Input
 #define M 700//Number of inputs-outputs
 #define TEST 100//test batch
-#define EPOCH 200
+#define EPOCH 3
 
 #define a -0.2//learning rate
 
@@ -96,12 +96,12 @@ int main(){
         activateNN((double *)X[d]);
         estimated=max_index(NL2,OL2);//get estimated category
         category=max_index(NL2,(double*)Y[d]);//get expected category
-        if(estimated!=category) count++;
+        if(estimated==category) count++;
         err+=MSE((double*)Y[d]);
         // printf("%lf,%lf - > %d\n",X[d][0],X[d][1],category);
     }
     printf("Test MSE: %lf\n",err/TEST);
-    printf("Test Error: %d of %d (%3.1f %%)\n",count,TEST,(100.0*count/TEST));
+    printf("Test Acc: %d of %d (%3.1f %%)\n",count,TEST,(100.0*count/TEST));
     t2 = omp_get_wtime() ;
     ttot += t = t2-t1 ;
     printf("    time : %lfs\n",t);
