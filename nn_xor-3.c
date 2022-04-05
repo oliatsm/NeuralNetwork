@@ -22,9 +22,9 @@
 #define NL1 100//hidden Layer
 #define NL2 10//Output
 #define N 2 //Input
-#define M 700//Number of inputs-outputs
-#define TEST 100//test batch
-#define EPOCH 3
+#define M 70000//Number of inputs-outputs
+#define TEST 10000//test batch
+#define EPOCH 10
 
 #define a -0.01//learning rate
 
@@ -77,10 +77,10 @@ int main(){
         }
         t2 = omp_get_wtime() ;
         ttot += t = t2-t1 ;
-        if(epoch%10==0){
+        // if(epoch%10==0){
             printf("%4.0d MSE: %lf , ",epoch,error/(M-TEST));
             printf("time : %lfs\n",t);
-        }
+        // }
     }
     
 
