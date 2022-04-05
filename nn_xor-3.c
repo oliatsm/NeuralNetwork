@@ -26,7 +26,7 @@
 #define TEST 100//test batch
 #define EPOCH 3
 
-#define a -0.2//learning rate
+#define a -0.01//learning rate
 
 //---------------------
 double X[M][N];
