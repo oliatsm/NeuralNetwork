@@ -69,11 +69,14 @@ $$
 
 The difference between actual and desired outputs:
 
-$$E = \frac{1}{2} \sum_i (y_i - d_i)^2$$
+$$
+E = \frac{1}{2} \sum_i (y_i - d_i)^2
+$$
 
 3. **Backpropagation**
 
-Errors are propagated backwards to update the weights:
+Errors are propagated backwards to update the weights:  
+
 $$
 \delta_{output} = (y - d) \cdot y(1 - y)
 $$
@@ -84,7 +87,9 @@ $$
 
 4. **Weight Update**
 
-$$W = W - \eta \cdot \delta \cdot x^T$$
+$$
+W = W - \eta \cdot \delta \cdot x^T
+$$
 
 where **η** is the learning rate.
 
