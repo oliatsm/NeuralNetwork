@@ -23,8 +23,7 @@
 #define NL2 10//Output
 #define N SIZE //784 -Input
 #define M NUM_TRAIN//60000 - Number of inputs-outputs 
-#define EPOCH 3
-
+#define EPOCH 20
 
 #define a -0.01 //learning rate
 

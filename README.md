@@ -1,154 +1,178 @@
-# NeuralNetwork
-Error Back Propagation
----
+# Neural Network Implementation — Error Backpropagation Algorithm
 
-### Αρχεία:
-**nn1-5.c** 	: νευρωνικό δίκτυο με τυχαίες τιμές εισόδου- εξόδου  
-**nn_xor-3.c** 	: νευρωνικό δίκτυο πύλης XOR  
-**nn_fmnist-5.c**	:νευρωνικό δίκτυο με τιμές εισόδου-εξόδου fashion mnist  
-**mnist.h**		: συναρτήσεις για εισαγωγή των δεδομένων από τα αρχεία του fmnist  
-**printing.h**	: συναρτήσεις για εκτύπωση πινάκων
-* PrintArray(int n,double a[]): για μονοδιάστατο πίνακα a[m]
-* Print2dArray(int n,int m,double a[][m]): για δισδιάστατο πίνακα a[n][m]
+--- 
 
----
+## Objective
 
-## Υπολογισμός Mean Squared Error – Συνάρτηση MSE()
-Για τον υπολογισμό του μέσου τετραγωνικού σφάλματος, αφού υπολογίσω το μέσω τετραγωνικό σφάλμα για κάθε παράδειγμα ξεχωριστά,  υπολογίζω το άθροισμά τους στη μεταβλητή error και στη συνέχεια διαιρώ με τον αριθμό των παραδειγμάτων (μεταβλητή Μ) για να πάρω το τελικό MSE.
+The goal of this project is to** implement a feedforward neural network** trained using the **error backpropagation algorithm** from scratch in **C**.
 
+The emphasis is on understanding and programming each step of the learning process:
 
-```c
-int main(){
-	//…
-double error=0;
-for(int d=0;d<M;d++){
+- Forward propagation
 
-            activateNN((double *)X[d]);
-            trainNN((double *)X[d],(double *)Y[d]);
-            error+=MSE((double*)Y[d]);
-        }
-            printf("%4.0d MSE: %lf , ",epoch,error/(M));
-            printf("time : %lf\n",t);
-        }
-	//...
-}
+- Error computation
 
-```
+- Weight update through gradient descent
 
-```c
-double MSE(double *desired){
-
-    double sum = 0;
-    for(int n=0;n<NL2;n++){
-        double dif=desired[n]-OL2[n];
-        sum+=(dif*dif);
-    }
-    return sum/NL2;
-   }
-
-```
----
-
-## Υπολογισμός Σφαλμάτων 
-Από το σύνολο των δεδομένων που χρησιμοποιώ για test, βρίσκω την κατηγορία που ανήκει το κάθε παράδειγμα υπολογίζοντας τον νευρώνα εξόδου (**estimated**) με τη μεγαλύτερη τιμή και συγκρίνω αν είναι ο ίδιος νευρώνας με την κατηγορία που ανήκει πραγματικά το παραδειγμα (**category**). 
-
-
-```c
-int main(){
-	//…
-//Test
-    int count =0;
-    int estimated=0;
-    int category =0;
-    double err=0;
-    for(int d=0;d<TEST;d++){
-        activateNN((double *)X[d]);
-        estimated=max_index(NL2,OL2);
-        category=max_index(NL2,(double*)Y[d]);
-        if(estimated==category) count++;
-        err+=MSE((double*)Y[d]);
-    }
-    printf("Test MSE: %lf\n",err/TEST);
-    printf("Test Correct: %d of %d \n",count,TEST);
-	//…
-}
-
-```
+No external frameworks (like TensorFlow or PyTorch) are used.
 
 ---
 
-## Αποτελέσματα κώδικα με δεδομένα fashion mnist, για 20 επαναλήψεις:
+## Project Overview
 
+Three separate programs were developed to test and validate the algorithm’s functionality at different complexity levels:
+
+| Program                 | Description                                          | Input Type             | Purpose                                           |
+| ----------------------- | ---------------------------------------------------- | ---------------------- | ------------------------------------------------- |
+| **1. Random Input NN**  | Network trained with random input and output vectors | Random numbers         | Verifies algorithm stability and convergence      |
+| **2. XOR Problem NN**   | Network trained to solve the XOR logical problem     | Binary (0/1)           | Tests ability to learn a nonlinear function       |
+| **3. Fashion-MNIST NN** | Network trained on real dataset (Fashion-MNIST)      | 28×28 grayscale images | Applies the algorithm to real classification task |
+
+---
+
+## Neural Network Architecture
+| Layer  | Description          | Neurons                           | Notes                |
+| ------ | -------------------- | --------------------------------- | -------------------- |
+| Input  | Features             | N (e.g. 2 for XOR, 784 for MNIST) | Input vector         |
+| Hidden | Fully connected      | 100                               | Sigmoid activation   |
+| Output | Classification layer | 10                                | One neuron per class |
+
+
+**Activation Function:**  
+
+$$
+\sigma(x) = \frac{1}{1 + e^{-x}}
+$$
+
+**Derivative:​**
+
+$$
+\sigma'(y) = y(1 - y)
+$$
+
+---
+
+
+## Learning Process
+
+The network learns through **forward propagation** and **backpropagation** using gradient descent.
+
+1. **Forward Propagation**
+
+Each neuron computes:
+
+$$y_i = \sigma\left(\sum_j w_{ij}x_j + b_i\right)$$
+
+2. **Error Calculation**
+
+The difference between actual and desired outputs:
+
+$$E = \frac{1}{2} \sum_i (y_i - d_i)^2$$
+
+3. **Backpropagation**
+
+Errors are propagated backwards to update the weights:
+$$
+\delta_{output} = (y - d) \cdot y(1 - y)
+$$
+
+$$
+\delta_{hidden} = (W^T \delta_{output}) \cdot h(1 - h) 
+$$
+
+4. **Weight Update**
+
+$$W = W - \eta \cdot \delta \cdot x^T$$
+
+where **η** is the learning rate.
+
+---
+
+## Implementation Details
+
+| Parameter | Value                 | Description          |
+| --------- | --------------------- | -------------------- |
+| `NL1`     | 100                   | Hidden layer neurons |
+| `NL2`     | 10                    | Output layer neurons |
+| `N`       | 2 (XOR) / 784 (MNIST) | Input size           |
+| `M`       | 60000                 | Number of samples    |
+| `EPOCH`   | 20                    | Training iterations  |
+| `a`       | 0.01                  | Learning rate        |
+
+
+### Main Functions
+
+| Function                  | Purpose                                           |
+| ------------------------- | ------------------------------------------------- |
+| `Initialise_X()`          | Initializes training data (random, XOR, or MNIST) |
+| `Initialise_W()`          | Initializes weights in range [−0.1, 0.1]          |
+| `sigmoid()`, `dsigmoid()` | Activation and its derivative                     |
+| `forward()`               | Forward pass through a layer                      |
+| `trainNN()`               | Backpropagation and weight updates                |
+| `MSE()`                   | Calculates mean squared error                     |
+| `max_index()`             | Finds the most activated output neuron            |
+| `activateNN()`            | Executes full forward pass                        |
+| `SaveWeightsToFile()`     | Saves trained weights to a CSV file               |
+
+---
+
+Program Variants
+1. **Random Input Neural Network**
+
+- Input and output values are random within [−1, 1].
+
+- Verifies that the network stabilizes and the mean squared error decreases over time.
+
+2. **XOR Neural Network**
+
+- Inputs: binary pairs (0, 1)
+
+- Output: XOR of the inputs
+
+- Demonstrates that the network learns a non-linear mapping, impossible for a single-layer perceptron.
+
+3. **Fashion-MNIST Neural Network**
+
+- Input: 28×28 grayscale images (784 pixels)
+
+- Output: 10 clothing categories
+
+- Dataset: 60,000 training and 10,000 test examples
+
+- Achieved ~86.8% accuracy after 20 epochs.
+
+**Training Results:**
+
+```text
+Final Training Accuracy: 88.6%
+Test Accuracy: 86.8%
+Test MSE: 0.15997
+Total Time: ~464 seconds
 ```
-$ gcc nn_fmnist-5.c -o nn_fmnist -lm -fopenmp
-$ time ./fmnist 
+---
 
-X[60000][784], L1: 100, L2: 10,  epoch: 20
+## Example Output (Fashion-MNIST)
 
-Initialise fmnist data,W :  0.702933s
+```text
+X[60000][784], L1: 100, L2: 10, epoch: 20
+
+Initialise fmnist data, W : 0.335779s
 
 Training
-     MSE: 0.046677, Acc: 68.281667, time : 38.386558s
-   1 MSE: 0.029026, Acc: 81.086667, time : 40.930665s
-   2 MSE: 0.025730, Acc: 83.178333, time : 39.162451s
-   3 MSE: 0.024114, Acc: 84.215000, time : 37.570604s
-   4 MSE: 0.023024, Acc: 84.978333, time : 37.321124s
-   5 MSE: 0.022192, Acc: 85.581667, time : 36.369080s
-   6 MSE: 0.021514, Acc: 85.971667, time : 36.452514s
-   7 MSE: 0.020943, Acc: 86.373333, time : 36.322375s
-   8 MSE: 0.020451, Acc: 86.680000, time : 36.347077s
-   9 MSE: 0.020018, Acc: 86.958333, time : 36.297263s
-  10 MSE: 0.019633, Acc: 87.190000, time : 37.876887s
-  11 MSE: 0.019287, Acc: 87.421667, time : 38.476182s
-  12 MSE: 0.018974, Acc: 87.588333, time : 37.036921s
-  13 MSE: 0.018687, Acc: 87.793333, time : 36.514782s
-  14 MSE: 0.018422, Acc: 87.941667, time : 36.377067s
-  15 MSE: 0.018177, Acc: 88.105000, time : 36.308365s
-  16 MSE: 0.017948, Acc: 88.216667, time : 37.814276s
-  17 MSE: 0.017733, Acc: 88.346667, time : 37.328177s
-  18 MSE: 0.017530, Acc: 88.460000, time : 37.479174s
-  19 MSE: 0.017337, Acc: 88.585000, time : 37.176122s
+  ...
+ 19 MSE: 0.017337, Acc: 88.585000, time : 23.071148s
 
 Test
 Test MSE: 0.159970
 Test Acc: 8677 of 10000 (86.8 %)
-    time : 2.777352s
-Total time : 751.027950s
-
-real    12m31,069s
-user    12m29,741s
-sys     0m0,612s
-
+Total time : 464.389696s
 ```
-
 ---
 
-## Αποτελέσματα κώδικα XOR:
-```
-$ gcc nn_xor-3.c -o nn_xor-3 -lm -fopenmp 
-$ time ./nn_xor-3 
-XOR - NN
-
-X[60000][2], L1: 100, L2: 10
-Initialise X,Y,W :  0.005535s
-     MSE: 0.050732 , time : 1.019057s
-   1 MSE: 0.050422 , time : 0.949161s
-   2 MSE: 0.050408 , time : 0.963353s
-   3 MSE: 0.050399 , time : 0.944530s
-   4 MSE: 0.050391 , time : 0.953095s
-   5 MSE: 0.050383 , time : 0.957644s
-   6 MSE: 0.050374 , time : 0.946143s
-   7 MSE: 0.050359 , time : 0.947841s
-   8 MSE: 0.050157 , time : 0.940041s
-   9 MSE: 0.038376 , time : 0.948612s
-
-Test
-Test MSE: 0.020313
-Test Acc: 10000 of 10000 (100.0 %)
-    time : 0.072574s
-Total time : 9.647587s
-
-real    0m9,650s
-user    0m9,609s
-sys     0m0,028s
-```
+## Files
+| File                    | Description               |
+| ----------------------- | ------------------------- |
+| `nn_random.c`           | Random data training      |
+| `nn_xor.c`              | XOR logical problem       |
+| `nn_fmnist.c`           | Fashion-MNIST classifier  |
+| `mnist.h`, `printing.h` | Dataset and I/O utilities |
