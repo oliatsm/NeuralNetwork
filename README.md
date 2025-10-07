@@ -61,7 +61,9 @@ The network learns through **forward propagation** and **backpropagation** using
 
 Each neuron computes:
 
-$$y_i = \sigma\left(\sum_j w_{ij}x_j + b_i\right)$$
+$$
+y_i = \sigma\left(\sum_j w_{ij}x_j + b_i\right)
+$$
 
 2. **Error Calculation**
 
