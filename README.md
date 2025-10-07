@@ -4,7 +4,7 @@
 
 ## Objective
 
-The goal of this project is to** implement a feedforward neural network** trained using the **error backpropagation algorithm** from scratch in **C**.
+The goal of this project is to **implement a feedforward neural network** trained using the **error backpropagation algorithm** from scratch in **C**.
 
 The emphasis is on understanding and programming each step of the learning process:
 
@@ -116,7 +116,8 @@ where **η** is the learning rate.
 
 ---
 
-Program Variants
+## Program Variants
+
 1. **Random Input Neural Network**
 
 - Input and output values are random within [−1, 1].
@@ -176,3 +177,4 @@ Total time : 464.389696s
 | `nn_xor.c`              | XOR logical problem       |
 | `nn_fmnist.c`           | Fashion-MNIST classifier  |
 | `mnist.h`, `printing.h` | Dataset and I/O utilities |
+| `Makefile`              | For compilation           |
